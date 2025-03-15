@@ -1,0 +1,1 @@
+15/3 - didnt do anything today. was messing around trying to use chat21 for the chatting app and spent the whole day trying to figure it out. i guess ill just make it myself and throw security out the window for now
