@@ -11,7 +11,8 @@ function App() {
     <NavBar />
       <Routes>
         <Route path = "/" element = {<HomePage/>}/>
-        <Route path = "/Chats" element = {<ChatPage/>}/>
+        {/* <Route path = "/Chats" element = {<ChatPage/>}/>*/}
+        <Route path="/Chats/:chatId" element={<ChatPage />} /> 
         </Routes>
         </Router>
     </>
