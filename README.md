@@ -2,3 +2,5 @@
 
 16/3 - will be getting back on soon, just taking a brief break. ill made the backend myself and link it to mongodb for now. i made it work before and i can do it again.
 
+18/3 - getting back on it rn. designed the db and will be suing mongodb and cloudinary.
+
