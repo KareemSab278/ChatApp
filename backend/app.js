@@ -21,8 +21,8 @@ mongoose
 //====================================================================================
 
 const userSchema = new mongoose.Schema({
-    _id: { type: String }, // Still your custom unique ID, but we won't change it
-    username: { type: String, required: true, unique: true }, // New mutable field
+    _id: { type: String },
+    username: { type: String, required: true, unique: true },
     f_name: { type: String, required: true },
     password: { type: String, required: true },
     createdAt: { type: Date, default: Date.now }
