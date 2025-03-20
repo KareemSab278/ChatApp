@@ -1,10 +1,12 @@
 const express = require('express');
+const bcrypt = require('bcrypt');
 const mongoose = require('mongoose');
 const AutoIncrement = require('mongoose-sequence')(mongoose);
 const cors = require('cors');
 const app = express();
 app.use(cors());
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 //====================================================================================
 
@@ -21,6 +23,7 @@ mongoose
 const userSchema = new mongoose.Schema({
     _id: String,
     username: { type: String, required: true },
+    password: { type: String, required: true },
     createdAt: { type: Date, default: Date.now }
 });
 
@@ -107,7 +110,56 @@ app.get(`/messages/:_id`, async(req, res)=>{    // get messages by chat
 })
 
 
-//=============================================================== CREATE 2
+//=============================================================== CREATE
+
+app.post(`/new-user`, async (req,res) => {
+    try{
+    const account = {
+        username : req.body.username,
+        _id : req.body.id,
+        password : req.body.password,
+        CreatedAt: Date.now()
+    }
+    await new User(account).save()
+    res.status(200).json({ message: "User created successfully" })}
+catch (e){
+    res.status(400).json({message: e.message})
+}
+})
+
+app.post(`/new-mssg`, async (req,res) => {
+    try{
+        const message = {
+            _id : req.body.id,
+            chatId : req.body.chatId,
+            senderId : req.body.sender,
+            content : req.body.content,
+            timestamp: Date.now(),
+            isRead : false
+        }
+        await new Message(message).save()
+        res.status(200).json({message : "message sent!"})
+    }
+    catch (e){
+        res.status(400).json({message: e.message})
+    }
+})
+
+app.post(`/new-chat`,async (req,res)=>{
+    try{
+        const chat = {
+            _id : req.body.chatId,
+            participants : req.body.participant,
+            createdAt : Date.now(),
+            lastMessageAt : new Date()
+        }
+        await new Chat(chat).save()
+        res.status(200).json({message: "chat created!"})
+    }
+    catch (e){
+        res.status(400).json({message : e.message})
+    }
+})
 
 //=============================================================== UPDATE 3
 
