@@ -214,19 +214,20 @@ app.patch(`/change-username/:userId`, async (req, res) => {
     const { new_username } = req.body;
 
     try {
+        const user = await User.findById(userId);
+        const existingUser = await User.findOne({ username: new_username });
+
+        
         if (!new_username) {
             return res.status(400).json({ message: "New username (new_username) is required" });
         }
-
-        const user = await User.findById(userId);
         if (!user) {
             return res.status(400).json({ message: `Couldn't find user: ${userId}` });
         }
-
-        const existingUser = await User.findOne({ username: new_username });
         if (existingUser && existingUser._id !== userId) {
             return res.status(400).json({ message: `Username ${new_username} is already taken` });
         }
+
 
         user.username = new_username;
         await user.save();
