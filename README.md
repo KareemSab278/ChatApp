@@ -4,3 +4,4 @@
 
 18/3 - getting back on it rn. designed the db and will be suing mongodb and cloudinary.
 
+22/3 - making progress-ish
