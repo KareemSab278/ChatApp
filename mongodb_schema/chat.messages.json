@@ -1,0 +1,72 @@
+[{
+  "_id": "msg1001",
+  "chatId": "chat123",
+  "senderId": "user1",
+  "content": "Hey Bob, how’s it going?",
+  "timestamp": "2025-03-18T10:01:00Z",
+  "isRead": false
+},
+{
+  "_id": "msg1002",
+  "chatId": "chat123",
+  "senderId": "user2",
+  "content": "Hey Alice! Pretty good, you?",
+  "timestamp": "2025-03-18T10:02:00Z",
+  "isRead": false
+},
+{
+  "_id": "msg1003",
+  "chatId": "chat123",
+  "senderId": "user1",
+  "content": "Same here. Busy day?",
+  "timestamp": "2025-03-18T10:05:00Z",
+  "isRead": false
+},
+{
+  "_id": "msg2001",
+  "chatId": "chat456",
+  "senderId": "user2",
+  "content": "Yo Charlie, got plans later?",
+  "timestamp": "2025-03-18T10:11:00Z",
+  "isRead": false
+},
+{
+  "_id": "msg2002",
+  "chatId": "chat456",
+  "senderId": "user3",
+  "content": "Not much, you?",
+  "timestamp": "2025-03-18T10:12:00Z",
+  "isRead": false
+},
+{
+  "_id": "msg2003",
+  "chatId": "chat456",
+  "senderId": "user2",
+  "content": "Wanna grab food?",
+  "timestamp": "2025-03-18T10:15:00Z",
+  "isRead": false
+},
+{
+  "_id": "msg3001",
+  "chatId": "chat789",
+  "senderId": "user4",
+  "content": "Alice, you free this afternoon?",
+  "timestamp": "2025-03-18T10:21:00Z",
+  "isRead": false
+},
+{
+  "_id": "msg3002",
+  "chatId": "chat789",
+  "senderId": "alice_1",
+  "content": "Hey Diana, yeah I am!",
+  "timestamp": "2025-03-18T10:22:00Z",
+  "isRead": false
+},
+{
+  "_id": "msg3003",
+  "chatId": "chat789",
+  "senderId": "user4",
+  "content": "Cool, let’s meet up!",
+  "timestamp": "2025-03-18T10:25:00Z",
+  "isRead": false
+}]

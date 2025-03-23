@@ -1,24 +1,32 @@
 import { useState, useEffect, useRef } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import ChatBox from "../components/ChatBox";
-import { chats } from "./HomePage";
+import { messagesByChatId } from "../../app";
+import '../styles/ChatPage.css'
 
 const ChatPage = () => {
   const { chatId } = useParams();
   const navigate = useNavigate();
-  const chat = chats.find((chat) => chat.id === parseInt(chatId));
   const chatBoxRef = useRef(null);
-
-  const [messages, setMessages] = useState(chat ? [...chat.messages] : []);
+  const [messages, setMessages] = useState([]);
   const [message, setMessage] = useState("");
+  const [chat, setChat] = useState(null);
 
   useEffect(() => {
-    if (!chat) {
-      navigate("/");
-    } else {
-      setMessages([...chat.messages]);
-    }
-  }, [chat, navigate]);
+    const fetchChat = async () => {
+      const chatData = await messagesByChatId(chatId);
+      if (chatData && chatData.length >= 0) { // added the = because the page wasnt loading on empty convos lmao
+        setChat({ _id: chatId });
+        const normalizedMessages = chatData.map((msg) => ({
+          ...msg,
+          timestamp: new Date(msg.timestamp),
+        }));
+        setMessages(normalizedMessages);
+      } 
+    };
+  
+    fetchChat();
+  }, [chatId, navigate]);
 
   useEffect(() => {
     if (chatBoxRef.current) {
@@ -31,18 +39,13 @@ const ChatPage = () => {
     if (message.trim() === "") return;
 
     const newMessage = {
-      id: messages.length + 1,
+      _id: messages.length + 1, // was having unique key errors in line 79 because i was using _id there the whole time and it was id here. 
       sender: "You",
-      text: message,
+      message: message,
       timestamp: new Date(),
     };
 
-    setMessages([...messages, newMessage]);
-    
-    if (chat) {
-      chat.messages.push(newMessage);
-    }
-
+    setMessages((prevMessages) => [...prevMessages, newMessage]);
     setMessage("");
   };
 
@@ -57,42 +60,34 @@ const ChatPage = () => {
   }
 
   return (
-    <div className="bg-gray-900 text-white h-screen flex flex-col">
-      <div className="p-4 border-b border-gray-800">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-2">
+    <div className="chat-container">
+      <div className="header">
+        <div className="header-content">
+          <div className="header-left">
             <button
               onClick={() => navigate("/")}
-              className="text-gray-400 hover:text-white"
+              className="back-button"
             >
               ← Back
             </button>
-            <h2 className="text-xl">
-              {chat.name} ({chat.type})
-            </h2>
+            <h2 className="chat-title">{chatId}</h2>
           </div>
-          <span className="text-gray-400 text-sm">
-            {chat.type === "dm" ? "Direct Message" : "Group Chat"}
-          </span>
+          <span className="dm-label">DM</span>
         </div>
       </div>
 
-      <ChatBox ref={chatBoxRef} className="flex-1 overflow-y-auto p-4">
+      <ChatBox ref={chatBoxRef} className="chat-box"> {/* error here somewhere?????? */}
         {messages.map((msg) => (
           <div
-            key={msg.id}
-            className={`mb-4 ${
-              msg.sender === "You" ? "text-right" : "text-left"
-            }`}
+            key={msg._id}
+            className={`message ${msg.sender === "You" ? "message-right" : "message-left"}`}
           >
             <div
-              className={`inline-block p-3 rounded-lg ${
-                msg.sender === "You" ? "bg-blue-600" : "bg-gray-800"
-              }`}
+              className={`message-bubble ${msg.sender === "You" ? "message-you" : "message-other"}`}
             >
-              <div className="text-sm text-gray-400">{msg.sender}</div>
-              <div>{msg.text}</div>
-              <div className="text-xs text-gray-500 mt-1">
+              <div className="sender">{msg.sender}</div>
+              <div>{msg.content}</div>
+              <div className="timestamp">
                 {msg.timestamp.toLocaleTimeString()}
               </div>
             </div>
@@ -100,19 +95,19 @@ const ChatPage = () => {
         ))}
       </ChatBox>
 
-      <div className="p-4 border-t border-gray-800">
-        <form onSubmit={handleSendMessage} className="flex gap-2">
+      <div className="input-container">
+        <form onSubmit={handleSendMessage} className="input-form">
           <input
             type="text"
             placeholder="Type a message..."
             value={message}
             onChange={(e) => setMessage(e.target.value)}
             onKeyPress={handleKeyPress}
-            className="flex-1 p-2 bg-gray-800 text-white border border-gray-700 rounded focus:outline-none focus:border-blue-500"
+            className="message-input"
           />
           <button
             type="submit"
-            className="px-4 py-2 bg-blue-600 hover:bg-blue-700 rounded text-white"
+            className="send-button"
           >
             Send
           </button>
