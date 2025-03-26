@@ -104,7 +104,7 @@ const ChatPage = () => {
               <div className="sender">{msg.senderId}</div> {/* updated sender to senderId to show the sender inf rontend */}
               <div>{msg.content}</div>
               <div className="timestamp">
-                 {msg.timestamp.toLocaleTimeString()} {/* got an issue with converting to local string which crashes the page apparently... */}
+                 {msg.timestamp.toString()} {/* got an issue with converting to local time string which crashes the page apparently when sending a message... */}
               </div>
             </div>
           </div>
