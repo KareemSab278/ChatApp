@@ -37,20 +37,33 @@ const ChatPage = () => {
   const handleSendMessage = (e) => {
     e.preventDefault();
     if (message.trim() === "") return;
-
+  
+    console.log("chatId from useParams:", chatId);
+    if (!chatId) {
+      console.error("chatId is undefined - cannot send message"); // had to use ai here to pinpoint the problem and for error handling
+      return;
+    }
+  
     const newMessage = {
-      // mssgId: messages.length + 1, // was having unique key errors in line 79 because i was using _id there the whole time and it was id here.
-      // sets the id to the message array's length plus 1 which gives it a unique id. 
       chatId: chatId,
-      sender: "You", // set to you as default for now but will change to signed in user
+      senderId: "You", // Changed to senderId
       content: message,
-      timestamp: new Date()
+      timestamp: new Date(),
     };
-
+  
     sendNewMessage(newMessage)
-    setMessages((prevMessages) => [...prevMessages, newMessage]);
+      .then((savedMessage) => {
+        if (savedMessage && savedMessage._id) {
+          setMessages((prevMessages) => [...prevMessages, savedMessage]);
+        } else {
+          console.error("Server didn’t return a valid message:", savedMessage);
+        }
+      })
+      .catch((err) => console.error("Failed to send message:", err.message));
     setMessage("");
   };
+
+  
 
   const handleKeyPress = (e) => {
     if (e.key === "Enter") {
@@ -88,10 +101,10 @@ const ChatPage = () => {
             <div
               className={`message-bubble ${msg.sender === "You" ? "message-you" : "message-other"}`}
             >
-              <div className="sender">{msg.sender}</div>
+              <div className="sender">{msg.senderId}</div> {/* updated sender to senderId to show the sender inf rontend */}
               <div>{msg.content}</div>
               <div className="timestamp">
-                {msg.timestamp.toLocaleTimeString()}
+                 {msg.timestamp.toLocaleTimeString()} {/* got an issue with converting to local string which crashes the page apparently... */}
               </div>
             </div>
           </div>

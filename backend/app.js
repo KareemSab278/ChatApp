@@ -35,8 +35,7 @@ const chatSchema = new mongoose.Schema({
     lastMessageAt: { type: Date, default: Date.now }
 });
 
-const mssgSchema = new mongoose.Schema({
-    _id: String,
+const mssgSchema = new mongoose.Schema({ // removed _id from here because it is an auto inc ion mongo db
     chatId: String,
     senderId: String,
     content: String,
@@ -138,27 +137,33 @@ app.post(`/new-user`, async (req, res) => {
     }
 });
 
-app.post(`/new-mssg`, async (req, res) => {
+app.post('/new-mssg', async (req, res) => {
+    console.log("Received POST /new-mssg:", req.body);
     try {
-        const { mssgId, chatId, sender, content } = req.body;
-        if (!chatId || !sender || !content) {
-            return res.status(400).json({ message: "chatId, sender, and content are required" });
-        }
-
-        const message = {
-            _id: mssgId || undefined,
-            chatId: chatId,
-            senderId: sender,
-            content: content,
-            timestamp: Date.now(),
-            isRead: false
-        };
-        const savedMessage = await new Message(message).save();
-        res.status(200).json(savedMessage);
+      const { mssgId, chatId, sender, senderId, content } = req.body;
+      console.log("Parsed fields:", { mssgId, chatId, sender, senderId, content }); // fix: removed id because mongo can handle it for me anyway
+  
+      if (!chatId || (!sender && !senderId) || !content) {
+        console.log("Validation failed: Missing required fields");
+        return res.status(400).json({ message: "chatId, sender/senderId, and content are required" });
+      }
+  
+      const message = {
+        chatId: chatId,
+        senderId: senderId || sender,
+        content: content,
+        timestamp: Date.now(),
+        isRead: false,
+      };
+      const savedMessage = await new Message(message).save();
+      console.log("Message saved:", savedMessage);
+      res.status(200).json(savedMessage);
     } catch (e) {
-        res.status(400).json({ message: e.message });
+      console.error("Error saving message:", e.message);
+      res.status(400).json({ message: e.message });
     }
-});
+  });
+
 
 app.post(`/new-chat`, async (req, res) => {
     try {

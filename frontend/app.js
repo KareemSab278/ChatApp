@@ -66,4 +66,32 @@ export async function sendNewMessage(params) {
   }
 }
 
+const handleSendMessage = (e) => {
+  e.preventDefault();
+  if (message.trim() === "") return;
+  if (!chatId) {
+    console.error("chatId is undefined - cannot send message");
+    return;
+  }
+
+  const newMessage = {
+    chatId: chatId,
+    senderId: "You", // Changed to senderId to match schema in mongodb
+    content: message,
+    timestamp: new Date(),
+  };
+
+  sendNewMessage(newMessage)
+    .then((savedMessage) => {
+      if (savedMessage && savedMessage._id) {
+        console.log("Message saved successfully:", savedMessage);
+        setMessages((prevMessages) => [...prevMessages, { ...newMessage, _id: savedMessage._id }]);
+      } else {
+        console.error("Server didn’t return a valid message:", savedMessage);
+      }
+    })
+    .catch((err) => console.error("Failed to send message:", err.message));
+  setMessage("");
+};
+
 export default {getMessages, getChats, getUsers, messagesByChatId, sendNewMessage}
