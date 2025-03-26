@@ -3,6 +3,7 @@ import ChatPage from "./pages/ChatPage";
 import NavBar from "./components/NavBar";
 import "./styles/App.css";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import SignIn from "./pages/SignIn";
 
 function App() {
   return (
@@ -11,8 +12,10 @@ function App() {
     <NavBar />
       <Routes>
         <Route path = "/" element = {<HomePage/>}/>
+        <Route path = "/signin" element = {<SignIn/>}/>
         {/* <Route path = "/Chats" element = {<ChatPage/>}/>*/}
-        <Route path="/Chats/:chatId" element={<ChatPage />} /> 
+        <Route path="/Chats/:chatId" element={<ChatPage />} 
+        /> 
         </Routes>
         </Router>
     </>

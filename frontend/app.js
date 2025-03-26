@@ -62,7 +62,6 @@ export async function sendNewMessage(params) {
 
   } catch (e) {
     console.error(e.message);
-    // console.error("failed to send message")
   }
 }
 
@@ -94,4 +93,14 @@ const handleSendMessage = (e) => {
   setMessage("");
 };
 
-export default {getMessages, getChats, getUsers, messagesByChatId, sendNewMessage}
+
+export async function signInUser(id, password){
+  try{
+
+  }
+  catch(e){
+    console.error(e.message)
+  }
+}
+
+export default {getMessages, getChats, getUsers, messagesByChatId, sendNewMessage, signInUser}
