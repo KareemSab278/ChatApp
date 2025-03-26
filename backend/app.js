@@ -140,21 +140,21 @@ app.post(`/new-user`, async (req, res) => {
 
 app.post(`/new-mssg`, async (req, res) => {
     try {
-        const { id, chatId, sender, content } = req.body;
+        const { mssgId, chatId, sender, content } = req.body;
         if (!chatId || !sender || !content) {
             return res.status(400).json({ message: "chatId, sender, and content are required" });
         }
 
         const message = {
-            _id: id,
+            _id: mssgId || undefined,
             chatId: chatId,
             senderId: sender,
             content: content,
             timestamp: Date.now(),
             isRead: false
         };
-        await new Message(message).save();
-        res.status(200).json({ message: "Message sent!" });
+        const savedMessage = await new Message(message).save();
+        res.status(200).json(savedMessage);
     } catch (e) {
         res.status(400).json({ message: e.message });
     }

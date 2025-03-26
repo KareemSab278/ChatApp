@@ -45,4 +45,25 @@ try {
 }
 };
 
-export default {getMessages, getChats, getUsers, messagesByChatId}
+// am now working on sending messages
+
+export async function sendNewMessage(params) {
+  try {
+    const response = await fetch('http://localhost:3307/new-mssg', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(params)
+    });
+
+    const data = await response.json();
+    return data;
+
+  } catch (e) {
+    console.error(e.message);
+    // console.error("failed to send message")
+  }
+}
+
+export default {getMessages, getChats, getUsers, messagesByChatId, sendNewMessage}

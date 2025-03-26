@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import ChatBox from "../components/ChatBox";
-import { messagesByChatId } from "../../app";
+import { messagesByChatId, sendNewMessage } from "../../app"; // added sendNewMessage
 import '../styles/ChatPage.css'
 
 const ChatPage = () => {
@@ -39,12 +39,15 @@ const ChatPage = () => {
     if (message.trim() === "") return;
 
     const newMessage = {
-      _id: messages.length + 1, // was having unique key errors in line 79 because i was using _id there the whole time and it was id here. 
-      sender: "You",
-      message: message,
-      timestamp: new Date(),
+      // mssgId: messages.length + 1, // was having unique key errors in line 79 because i was using _id there the whole time and it was id here.
+      // sets the id to the message array's length plus 1 which gives it a unique id. 
+      chatId: chatId,
+      sender: "You", // set to you as default for now but will change to signed in user
+      content: message,
+      timestamp: new Date()
     };
 
+    sendNewMessage(newMessage)
     setMessages((prevMessages) => [...prevMessages, newMessage]);
     setMessage("");
   };
