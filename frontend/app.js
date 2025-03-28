@@ -93,14 +93,27 @@ const handleSendMessage = (e) => {
   setMessage("");
 };
 
+// this wasnt working because i wasnt comparing bcrypt password but just plain text lol. im an idioto
 
-export async function signInUser(id, password){
-  try{
+export async function signInUser(credentials) {
+  try {
+    const response = await fetch('http://localhost:3307/login', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(credentials),
+    });
 
-  }
-  catch(e){
-    console.error(e.message)
+    const data = await response.json();
+    if (!response.ok) throw new Error(data.message);
+
+    return data;
+  } catch (error) {
+    console.error('signInUser error:', error);
+    throw error;
   }
 }
+
 
 export default {getMessages, getChats, getUsers, messagesByChatId, sendNewMessage, signInUser}

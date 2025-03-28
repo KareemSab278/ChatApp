@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 // import { signInUser } from "../app";
 import { useNavigate } from "react-router-dom";
+import { signInUser } from "../../app";
 
 const SignIn = () => {
   const [username, setUsername] = useState("");
@@ -12,11 +13,10 @@ const SignIn = () => {
     e.preventDefault();
     try {
       const signedInUser = await signInUser({ username, password });
-      alert(`Welcome, ${signedInUser.username}`);
-      // Navigate to Jobs page and pass the manager object
+      // alert(`Welcome, ${signedInUser.f_name}`); // very annoying line of code.
       navigate("/chats", { state: { signedInUser } });
-    } catch (err) {
-      setError(err.message);
+    } catch (e) {
+      setError(e.message);
     }
   };
 

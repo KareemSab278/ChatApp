@@ -3,8 +3,11 @@ import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Button from "../components/Button";
 import { getChats, getUsers } from "../../app";
+import { useLocation } from "react-router-dom";
 
 const HomePage = () => {
+  const location = useLocation();
+  const user = location.state?.signedInUser;
   const [search, setSearch] = useState("");
   const [chats, setChats] = useState([]);
   const [selectedChat, setSelectedChat] = useState(null);
@@ -19,13 +22,13 @@ const HomePage = () => {
     fetchChats();
   }, []);
 
-  const handleChatSelect = (chat) => {
-    setSelectedChat(chat);
-    navigate(`/Chats/${chat.id}`);
+  const handleChatSelect = (chats) => {
+    setSelectedChat(chats);
+    navigate(`/Chats/${chats.id}`);
   };
 
-  const filteredChats = chats.filter((chat) =>
-    search.toLowerCase() === "" ? true : chat.name.toLowerCase().includes(search.toLowerCase())
+  const filteredChats = chats.filter((chats) =>
+    (String(search || "") === "" ? true : (chats._id && chats._id.toLowerCase().includes(String(search).toLowerCase())) )
   );
 
   return (
@@ -34,6 +37,7 @@ const HomePage = () => {
         type="text"
         placeholder="Search users..."
         className="search-input"
+        autoComplete="off"
         value={search}
         onChange={(e) => setSearch(e.target.value)}
       />
@@ -54,6 +58,7 @@ const HomePage = () => {
           <div className="no-chats-message">No chats found matching your search</div>
         )}
       </div>
+      <p style={{ fontSize: "10px" }}>{user?.username}</p>
     </div>
   );
 };

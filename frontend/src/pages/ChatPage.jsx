@@ -3,8 +3,12 @@ import { useParams, useNavigate } from "react-router-dom";
 import ChatBox from "../components/ChatBox";
 import { messagesByChatId, sendNewMessage } from "../../app"; // added sendNewMessage
 import '../styles/ChatPage.css'
+import { useLocation } from "react-router-dom";
+
 
 const ChatPage = () => {
+  const location = useLocation();
+  const user = location.state?.user;
   const { chatId } = useParams();
   const navigate = useNavigate();
   const chatBoxRef = useRef(null);
@@ -81,7 +85,7 @@ const ChatPage = () => {
         <div className="header-content">
           <div className="header-left">
             <button
-              onClick={() => navigate("/")}
+              onClick={() => navigate("/chats")}
               className="back-button"
             >
               ← Back

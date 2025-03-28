@@ -55,7 +55,7 @@ app.get('/users', async (req, res) => {
     try {
         const users = await User.find({});
         res.status(200).json(users);
-        console.log(users.map(user => user._id.toString()));
+        // console.log(users.map(user => user._id.toString()));
     } catch (error) {
         res.status(400).json({ message: error.message });
     }
@@ -65,7 +65,7 @@ app.get('/chats', async (req, res) => {
     try {
         const chats = await Chat.find({});
         res.status(200).json(chats);
-        console.log(chats.map(chat => chat._id.toString()));
+        // console.log(chats.map(chat => chat._id.toString()));
     } catch (e) {
         res.status(400).json({ message: e.message });
     }
@@ -80,7 +80,7 @@ app.get('/chats/:participant', async (req, res) => {
             return res.status(404).json({ message: 'No chats found' });
         }
         res.status(200).json(chats);
-        console.log(chats.map(chat => chat._id.toString()));
+        // console.log(chats.map(chat => chat._id.toString()));
     } catch (e) {
         res.status(400).json({ message: e.message });
     }
@@ -184,6 +184,28 @@ app.post(`/new-chat`, async (req, res) => {
         res.status(400).json({ message: e.message });
     }
 });
+
+app.post('/login', async (req, res) => { // this one was with ai because i was getting errors and couldnt figure it out
+    try {
+        const { username, password } = req.body;
+        const user = await User.findOne({ username });
+
+        if (!user) {
+            return res.status(400).json({ message: "Invalid credentials" });
+        }
+
+        const isMatch = await bcrypt.compare(password, user.password);
+        if (!isMatch) {
+            return res.status(400).json({ message: "Invalid credentials" });
+        }
+
+        res.status(200).json(user);
+    } catch (error) {
+        console.error('Login error:', error);
+        res.status(500).json({ message: "Server error" });
+    }
+});
+
 
 //=============================================================== UPDATE
 
