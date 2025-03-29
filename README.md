@@ -5,3 +5,5 @@
 18/3 - getting back on it rn. designed the db and will be suing mongodb and cloudinary.
 
 22/3 - making progress-ish
+
+29/3 - feel like trash. fasting got me messed up. ramadan is almost done so imma do one stretch to get this chat app thing working before im gonna be hyperfocused on assignments (ive got three due next month and barely started). dont hyperfocus on doing side quests!
