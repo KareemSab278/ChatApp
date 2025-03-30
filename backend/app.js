@@ -29,7 +29,7 @@ const userSchema = new mongoose.Schema({
 });
 
 const chatSchema = new mongoose.Schema({
-    _id: String,
+    // _id: String,
     participants: { type: Array },
     createdAt: { type: Date, default: Date.now },
     lastMessageAt: { type: Date, default: Date.now }
@@ -119,12 +119,12 @@ app.post(`/new-user`, async (req, res) => {
         if (!password) {
             return res.status(400).json({ message: "Password is required" });
         }
-        if (!id) {
-            return res.status(400).json({ message: "User ID (_id) is required" });
-        }
+        // if (!id) {
+        //     return res.status(400).json({ message: "User ID (_id) is required" }); removed this cringe ahh code
+        // }
 
         const account = {
-            _id: id,
+            _id: username, // i set it up to be the username because searching users by username was a pain in the ass on the homepage
             username: username,
             f_name: f_name,
             password: await bcrypt.hash(password, 10),
@@ -165,23 +165,25 @@ app.post('/new-mssg', async (req, res) => {
   });
 
 
-app.post(`/new-chat`, async (req, res) => {
+  app.post('/chats', async (req, res) => {
     try {
-        const { chatId, participant } = req.body;
-        if (!chatId || !participant) {
-            return res.status(400).json({ message: "chatId and participant are required" });
+        const { participants } = req.body;
+
+        if (!participants || !Array.isArray(participants) || participants.length < 2) {
+            return res.status(400).json({ message: "Participants must be an array with at least 2 user IDs" });
         }
 
-        const chat = {
-            _id: chatId,
-            participants: participant,
-            createdAt: Date.now(),
-            lastMessageAt: Date.now()
-        };
-        await new Chat(chat).save();
-        res.status(200).json({ message: "Chat created!" });
+        const chat = new Chat({
+            participants,
+            createdAt: new Date().toISOString(),
+            lastMessageAt: new Date().toISOString(),
+        });
+
+        const savedChat = await chat.save();
+        res.status(201).json(savedChat);
     } catch (e) {
-        res.status(400).json({ message: e.message });
+        console.error("Error creating chat:", e.message);
+        res.status(500).json({ message: "Failed to create chat: " + e.message });
     }
 });
 
@@ -205,7 +207,6 @@ app.post('/login', async (req, res) => { // this one was with ai because i was g
         res.status(500).json({ message: "Server error" });
     }
 });
-
 
 //=============================================================== UPDATE
 

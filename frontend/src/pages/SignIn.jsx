@@ -2,6 +2,7 @@ import React, { useState } from "react";
 // import { signInUser } from "../app";
 import { useNavigate } from "react-router-dom";
 import { signInUser } from "../../app";
+import Button from "../components/Button";
 
 const SignIn = () => {
   const [username, setUsername] = useState("");
@@ -43,6 +44,10 @@ const SignIn = () => {
         {error && <p style={{ color: "red" }}>{error}</p>}
         <button type="submit">Sign In</button>
       </form>
+      <Button
+      name= {'sign up'}
+      onClick={() => navigate("/sign-up")}>
+      </Button>
     </div>
   );
 };

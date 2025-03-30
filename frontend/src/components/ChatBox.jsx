@@ -1,9 +1,16 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
-import getChats from '../../app';
 
 const ChatBox = ({ children }) => {
+  const chatBoxRef = useRef(null);
+
+  useEffect(() => {
+    if (chatBoxRef.current) {
+      chatBoxRef.current.scrollTop = chatBoxRef.current.scrollHeight;
+    }
+  }, [children]);
+
   return (
     <Container maxWidth="sm">
       <Typography
@@ -12,7 +19,9 @@ const ChatBox = ({ children }) => {
           backgroundColor: 'black',
           height: '50vh',
           padding: '20px',
+          overflowY: 'auto',
         }}
+        ref={chatBoxRef}
       >
         {children}
       </Typography>

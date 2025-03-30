@@ -65,6 +65,30 @@ export async function sendNewMessage(params) {
   }
 }
 
+export async function createChat(participants) { // fixed this up to create a new chat
+  try {
+    const response = await fetch('http://localhost:3307/chats', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        participants,
+      }),
+    });
+
+    if (!response.ok){
+      const errorData = await response.json();
+  throw new Error(errorData.message || "Failed to create chat");
+    }
+    return await response.json();
+
+  } catch (e) {
+    console.error("Error creating chat:", e.message);
+    return null;
+  }
+}
+
 const handleSendMessage = (e) => {
   e.preventDefault();
   if (message.trim() === "") return;
@@ -75,7 +99,7 @@ const handleSendMessage = (e) => {
 
   const newMessage = {
     chatId: chatId,
-    senderId: "You", // Changed to senderId to match schema in mongodb
+    senderId: "You", // if i change this the thing crashes idk why. dont touch it.
     content: message,
     timestamp: new Date(),
   };
@@ -115,5 +139,48 @@ export async function signInUser(credentials) {
   }
 }
 
+export async function signUpUser(credentials) {
+  try {
+    const response = await fetch("http://localhost:3307/new-user", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(credentials),
+    });
 
-export default {getMessages, getChats, getUsers, messagesByChatId, sendNewMessage, signInUser}
+    const data = await response.json();
+    if (!response.ok) throw new Error(data.message);
+
+    return data;
+  } catch (error) {
+    console.error("signUpUser error:", error);
+    throw error;
+  }
+}
+
+const handleSignUp = async (e) => {
+  e.preventDefault();
+
+  if (!username || !f_name || !password) {
+    console.error("All fields are required");
+    return;
+  }
+
+  const newUser = {
+    id: username,
+    username,
+    f_name,
+    password,
+  };
+
+  try {
+    const response = await signUpUser(newUser);
+    console.log("User signed up successfully:", response);
+  } catch (error) {
+    console.error("Signup failed:", error.message);
+  }
+};
+
+
+export default {getMessages, getChats, getUsers, messagesByChatId, sendNewMessage, signInUser, createChat, signUpUser}

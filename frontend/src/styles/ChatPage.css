@@ -1,6 +1,4 @@
 .chat-container {
-    background-color: #1F2937;
-    color: #FFFFFF;
     height: 100vh;
     display: flex;
     flex-direction: column;
@@ -8,7 +6,7 @@
 
 .header {
     padding: 1rem;
-    border-bottom: 1px solid #374151;
+    border-bottom: 1px solid;
 }
 
 .header-content {
@@ -24,14 +22,9 @@
 }
 
 .back-button {
-    color: #9CA3AF;
     background: none;
     border: none;
     cursor: pointer;
-}
-
-.back-button:hover {
-    color: #FFFFFF;
 }
 
 .chat-title {
@@ -39,7 +32,6 @@
 }
 
 .dm-label {
-    color: #9CA3AF;
     font-size: 0.875rem;
 }
 
@@ -68,27 +60,25 @@
 }
 
 .message-you {
-    background-color: #222937;
+    background-color: #2c2c47b1;
 }
 
 .message-other {
-    background-color: #374151;
+    background-color: #362a2acd;
 }
 
 .sender {
     font-size: 0.875rem;
-    color: #9CA3AF;
 }
 
 .timestamp {
     font-size: 0.75rem;
-    color: #6B7280;
     margin-top: 0.25rem;
 }
 
 .input-container {
     padding: 1rem;
-    border-top: 1px solid #374151;
+    border-top: 1px solid;
 }
 
 .input-form {
@@ -99,26 +89,19 @@
 .message-input {
     flex: 1;
     padding: 0.5rem;
-    background-color: #374151;
-    color: #FFFFFF;
-    border: 1px solid #4B5563;
+    background-color: #333333;
+    border: 1px solid;
     border-radius: 0.25rem;
 }
 
 .message-input:focus {
     outline: none;
-    border-color: #3B82F6;
 }
 
 .send-button {
     padding: 0.5rem 1rem;
-    background-color: #2563EB;
-    color: #FFFFFF;
+    background-color: #444444;
     border: none;
     border-radius: 0.25rem;
     cursor: pointer;
-}
-
-.send-button:hover {
-    background-color: #1D4ED8;
 }

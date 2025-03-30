@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import ChatBox from "../components/ChatBox";
-import { messagesByChatId, sendNewMessage } from "../../app"; // added sendNewMessage
+import { messagesByChatId, sendNewMessage, getChats } from "../../app"; // added sendNewMessage
 import '../styles/ChatPage.css'
 import { useLocation } from "react-router-dom";
 
@@ -9,12 +9,13 @@ const ChatPage = () => {
   const location = useLocation();
   const userFromState = location.state?.signedInUser;
   const user = userFromState || JSON.parse(localStorage.getItem("signedInUser"));  const { chatId } = useParams();
-  // so the issue was with keeping th euser signed in. i tried avoiding using localstorage but had no other solution i could think up.
+  // so the issue was with keeping the user signed in. i tried avoiding using localstorage but had no other solution i could think up.
   const navigate = useNavigate();
   const chatBoxRef = useRef(null);
   const [messages, setMessages] = useState([]);
   const [message, setMessage] = useState("");
   const [chat, setChat] = useState(null);
+  const [participants, setParticipants] = useState([]);
 
   useEffect(() => {
     const fetchChat = async () => {
@@ -28,7 +29,16 @@ const ChatPage = () => {
         setMessages(normalizedMessages);
       } 
     };
-  
+
+    const fetchParticipants = async () => {
+      const chats = await getChats();
+      const selectedChat = chats.find(chat => chat._id === chatId);
+        const participants = selectedChat.participants;
+        console.log(participants)
+        setParticipants(selectedChat.participants);
+    };
+    
+    fetchParticipants();
     fetchChat();
   }, [chatId, navigate]);
 
@@ -45,19 +55,17 @@ const ChatPage = () => {
     e.preventDefault();
     if (message.trim() === "") return;
   
-    console.log("chatId from useParams:", chatId);
+    // console.log("chatId from useParams:", chatId);
     if (!chatId) {
       console.error("chatId is undefined - cannot send message"); // had to use ai here to pinpoint the problem and for error handling
       return;
     }
-    
-    console.log(user)
 
     const newMessage = {
       chatId: chatId,
       // senderId: "You", // Changed to senderId
       sender: user._id,
-      senderId: user.username,          //getting an issue here where sender and sender id is always undefined????
+      senderId: user.username,          //getting an issue here where sender and sender id is always undefined???? - solved
       content: message,
       timestamp: new Date(),
     };
@@ -100,9 +108,9 @@ const ChatPage = () => {
             >
               ← Back
             </button>
-            <h2 className="chat-title">{chatId}</h2>
+            <h2 className="chat-title">{participants.slice(1)}</h2>
           </div>
-          <span className="dm-label">DM</span>
+          {/* <span className="dm-label">DM</span> */}
         </div>
       </div>
 
