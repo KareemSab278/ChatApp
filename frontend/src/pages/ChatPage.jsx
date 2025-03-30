@@ -56,8 +56,8 @@ const ChatPage = () => {
     const newMessage = {
       chatId: chatId,
       // senderId: "You", // Changed to senderId
-      sender: user.username,
-      senderId: user._id,          //getting an issue here where sender and sender id is always undefined????
+      sender: user._id,
+      senderId: user.username,          //getting an issue here where sender and sender id is always undefined????
       content: message,
       timestamp: new Date(),
     };
@@ -111,15 +111,15 @@ const ChatPage = () => {
           <div
             key={msg._id}
             // className={`message ${msg.sender === "You" ? "message-right" : "message-left"}`}
-            className={`message ${msg.sender === "You" ? "message-right" : "message-left"}`}
+            className={`message ${msg.senderId === user.username ? "message-right" : "message-left"}`}
           >
             <div
-              className={`message-bubble ${msg.sender === "You" ? "message-you" : "message-other"}`}
+              className={`message-bubble ${msg.senderId === user.username ? "message-you" : "message-other"}`}
             >
               <div className="sender">{msg.senderId}</div> {/* updated sender to senderId to show the sender inf rontend */}
               <div>{msg.content}</div>
               <div className="timestamp">
-                 {msg.timestamp.toString()} {/* got an issue with converting to local time string which crashes the page apparently when sending a message... */}
+                 {msg.timestamp.toLocaleString()}
               </div>
             </div>
           </div>

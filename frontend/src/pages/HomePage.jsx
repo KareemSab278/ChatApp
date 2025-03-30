@@ -30,13 +30,13 @@ const HomePage = () => {
 
 if (!user) {
   console.error("User is undefined! Check where it's set.");
-  navigate('/'); //goes back to sign in page if there is no user
+  navigate('/signin'); //goes back to sign in page if there is no user
 }
   };
 const signOut =  ()=>{
   localStorage.removeItem("signedInUser");
-  navigate(`/`, { replace: true });
-  navigate(`/`, { state: { signedInUser:null } })
+  navigate(`/signin`, { replace: true });
+  navigate(`/signin`, { state: { signedInUser:null } })
 }
 
   const filteredChats = chats.filter((chats) =>
