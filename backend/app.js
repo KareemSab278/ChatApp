@@ -4,14 +4,14 @@ const mongoose = require('mongoose');
 const AutoIncrement = require('mongoose-sequence')(mongoose);
 const cors = require('cors');
 const app = express();
+require('dotenv').config();
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 //====================================================================================
 
-mongoose
-    .connect('mongodb://localhost:27017/chat', {
+mongoose.connect(process.env.MONGO_URI, { // changed the url
         useNewUrlParser: true,
         useUnifiedTopology: true,
     })
