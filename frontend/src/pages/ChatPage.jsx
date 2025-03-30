@@ -5,11 +5,11 @@ import { messagesByChatId, sendNewMessage } from "../../app"; // added sendNewMe
 import '../styles/ChatPage.css'
 import { useLocation } from "react-router-dom";
 
-
 const ChatPage = () => {
   const location = useLocation();
-  const user = location.state?.user;
-  const { chatId } = useParams();
+  const userFromState = location.state?.signedInUser;
+  const user = userFromState || JSON.parse(localStorage.getItem("signedInUser"));  const { chatId } = useParams();
+  // so the issue was with keeping th euser signed in. i tried avoiding using localstorage but had no other solution i could think up.
   const navigate = useNavigate();
   const chatBoxRef = useRef(null);
   const [messages, setMessages] = useState([]);
@@ -36,6 +36,9 @@ const ChatPage = () => {
     if (chatBoxRef.current) {
       chatBoxRef.current.scrollTop = chatBoxRef.current.scrollHeight;
     }
+    if(!user){
+      navigate('/'); //goes back to sign in page if there is no user
+    }
   }, [messages]);
 
   const handleSendMessage = (e) => {
@@ -47,14 +50,18 @@ const ChatPage = () => {
       console.error("chatId is undefined - cannot send message"); // had to use ai here to pinpoint the problem and for error handling
       return;
     }
-  
+    
+    console.log(user)
+
     const newMessage = {
       chatId: chatId,
-      senderId: "You", // Changed to senderId
+      // senderId: "You", // Changed to senderId
+      sender: user.username,
+      senderId: user._id,          //getting an issue here where sender and sender id is always undefined????
       content: message,
       timestamp: new Date(),
     };
-  
+
     sendNewMessage(newMessage)
       .then((savedMessage) => {
         if (savedMessage && savedMessage._id) {
@@ -67,7 +74,10 @@ const ChatPage = () => {
     setMessage("");
   };
 
-  
+  const backButton = ()=>{
+    navigate(`/chats`, { state: { signedInUser:user } })
+    console.log('navigating with user', user)
+  }
 
   const handleKeyPress = (e) => {
     if (e.key === "Enter") {
@@ -85,7 +95,7 @@ const ChatPage = () => {
         <div className="header-content">
           <div className="header-left">
             <button
-              onClick={() => navigate("/chats")}
+              onClick={() => backButton()}
               className="back-button"
             >
               ← Back
@@ -100,6 +110,7 @@ const ChatPage = () => {
         {messages.map((msg) => (
           <div
             key={msg._id}
+            // className={`message ${msg.sender === "You" ? "message-right" : "message-left"}`}
             className={`message ${msg.sender === "You" ? "message-right" : "message-left"}`}
           >
             <div

@@ -13,8 +13,10 @@ const SignIn = () => {
     e.preventDefault();
     try {
       const signedInUser = await signInUser({ username, password });
-      // alert(`Welcome, ${signedInUser.f_name}`); // very annoying line of code.
+      console.log('moving to chats page with id:', signedInUser._id)
+      localStorage.setItem("signedInUser", JSON.stringify(signedInUser));
       navigate("/chats", { state: { signedInUser } });
+
     } catch (e) {
       setError(e.message);
     }

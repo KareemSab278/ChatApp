@@ -24,8 +24,20 @@ const HomePage = () => {
 
   const handleChatSelect = (chats) => {
     setSelectedChat(chats);
-    navigate(`/Chats/${chats.id}`);
+    navigate(`/Chats/${chats?.id}`, { state: { signedInUser:user } }); // added the state because it wasnt persisting accross pages
+
+    console.log("Navigating with user:", user);
+
+if (!user) {
+  console.error("User is undefined! Check where it's set.");
+  navigate('/'); //goes back to sign in page if there is no user
+}
   };
+const signOut =  ()=>{
+  localStorage.removeItem("signedInUser");
+  navigate(`/`, { replace: true });
+  navigate(`/`, { state: { signedInUser:null } })
+}
 
   const filteredChats = chats.filter((chats) =>
     (String(search || "") === "" ? true : (chats._id && chats._id.toLowerCase().includes(String(search).toLowerCase())) )
@@ -33,6 +45,10 @@ const HomePage = () => {
 
   return (
     <div className="homepage-container">
+    <Button
+    name= {'sign out'}
+    onClick={() => signOut()}>
+    </Button>
       <input
         type="text"
         placeholder="Search users..."

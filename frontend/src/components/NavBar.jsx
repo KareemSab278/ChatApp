@@ -5,7 +5,7 @@ export default function NavBar() {
         <>
         <nav>
             {/* <Link to='/'> Users | </Link>*/}
-            <Link to='/chats'>  Chat </Link> 
+            {/* <Link to='/chats'>  Chat </Link>  */}
             </nav>
         </>
     );
