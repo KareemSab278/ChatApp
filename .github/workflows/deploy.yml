@@ -38,7 +38,7 @@ jobs:
 
       # Deploy to GitHub Pages
       - name: Deploy to GitHub Pages
-        uses: JamesIves/github-pages-deploy-action@v4.1.0
+        uses: JamesIves/github-pages-deploy-action@v4
         with:
           branch: gh-pages  # The branch GitHub Pages uses to serve content
           folder: frontend/dist  # The folder containing your built app (inside the frontend directory)
