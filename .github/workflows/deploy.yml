@@ -18,7 +18,7 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v2
         with:
-          node-version: '16'  # or any version of Node.js you prefer
+          node-version: '16'  # or the version you're using for your frontend
 
       # Navigate to the frontend directory
       - name: Navigate to frontend directory
@@ -30,7 +30,7 @@ jobs:
           cd frontend
           npm install
 
-      # Build the app
+      # Build the frontend app
       - name: Build the frontend app
         run: |
           cd frontend
@@ -41,4 +41,4 @@ jobs:
         uses: JamesIves/github-pages-deploy-action@v4.1.0
         with:
           branch: gh-pages  # The branch GitHub Pages uses to serve content
-          folder: frontend/dist  # The folder containing your built app (inside frontend directory)
+          folder: frontend/dist  # The folder containing your built app (inside the frontend directory)
