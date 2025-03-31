@@ -1,6 +1,6 @@
 export async function getChats() {
   try {
-    const chats = await fetch("http://localhost:3307/chats");
+    const chats = await fetch("https://chatapp-4fjb.onrender.com/chats");
     if (!chats.ok) throw new Error("Failed to fetch Chats");
 
     return await chats.json();
@@ -12,7 +12,7 @@ export async function getChats() {
 
 export async function getMessages() {
   try {
-    const messages = await fetch("http://localhost:3307/messages");
+    const messages = await fetch("https://chatapp-4fjb.onrender.com/messages");
     if (!messages.ok) throw new Error("Failed to fetch messages");
 
     return await messages.json();
@@ -24,7 +24,7 @@ export async function getMessages() {
 
 export async function getUsers() {
     try {
-      const users = await fetch("http://localhost:3307/users");
+      const users = await fetch("https://chatapp-4fjb.onrender.com/users");
       if (!users.ok) throw new Error("Failed to fetch users");
   
       return await users.json();
@@ -36,7 +36,7 @@ export async function getUsers() {
 
 export async function messagesByChatId(id) {
 try {
-    const messagesByChatId = await fetch(`http://localhost:3307/messages/${id}`);
+    const messagesByChatId = await fetch(`https://chatapp-4fjb.onrender.com/messages/${id}`);
     if (!messagesByChatId.ok) throw new Error("Failed to fetch users");
     return await messagesByChatId.json();
 } catch (e) {
@@ -49,7 +49,7 @@ try {
 
 export async function sendNewMessage(params) {
   try {
-    const response = await fetch('http://localhost:3307/new-mssg', {
+    const response = await fetch('https://chatapp-4fjb.onrender.com/new-mssg', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -67,7 +67,7 @@ export async function sendNewMessage(params) {
 
 export async function createChat(participants) { // fixed this up to create a new chat
   try {
-    const response = await fetch('http://localhost:3307/chats', {
+    const response = await fetch('https://chatapp-4fjb.onrender.com/chats', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -121,7 +121,7 @@ const handleSendMessage = (e) => {
 
 export async function signInUser(credentials) {
   try {
-    const response = await fetch('http://localhost:3307/login', {
+    const response = await fetch('https://chatapp-4fjb.onrender.com/login', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -141,7 +141,7 @@ export async function signInUser(credentials) {
 
 export async function signUpUser(credentials) {
   try {
-    const response = await fetch("http://localhost:3307/new-user", {
+    const response = await fetch("https://chatapp-4fjb.onrender.com/new-user", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
