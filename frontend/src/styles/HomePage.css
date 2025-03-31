@@ -1,0 +1,60 @@
+.homepage-container {
+    color: #ffffff;
+    height: 100vh;
+    width: auto;
+    padding: 1rem;
+}
+
+.search-input {
+    width: 100%;
+    padding: 0.5rem;
+    margin-bottom: 1rem;
+    background-color: #2d3748;
+    color: #ffffff;
+    border: 1px solid #4a5568;
+    border-radius: 0.25rem;
+}
+
+.chat-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.chat-link {
+    display: block;
+}
+
+.chat-button {
+    width: 100%;
+    text-align: left;
+    padding: 0.75rem;
+    border-radius: 0.25rem;
+    transition: background-color 0.3s;
+}
+
+.chat-button-default {
+    background-color: #2d3748;
+}
+
+.chat-button-default:hover {
+    background-color: #4a5568;
+}
+
+.chat-button-selected {
+    background-color: #2563eb;
+}
+
+.chat-button-selected:hover {
+    background-color: #1d4ed8;
+}
+
+.chat-button-group {
+    border-left: 4px solid #10b981;
+}
+
+.no-chats-message {
+    color: #a0aec0;
+    text-align: center;
+    padding: 1rem;
+}

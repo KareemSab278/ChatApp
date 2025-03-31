@@ -1,0 +1,25 @@
+[{
+  "_id": "user1",
+  "username": "alice",
+  "createdAt": "2025-03-18T09:00:00Z"
+},
+{
+  "_id": "user2",
+  "username": "bob",
+  "createdAt": "2025-03-18T09:05:00Z"
+},
+{
+  "_id": "user3",
+  "username": "charlie",
+  "createdAt": "2025-03-18T09:10:00Z"
+},
+{
+  "_id": "user4",
+  "username": "diana",
+  "createdAt": "2025-03-18T09:15:00Z"
+},
+{
+  "_id": "alice_1",
+  "username": "alice",
+  "createdAt": "2025-03-18T09:00:00Z"
+}]

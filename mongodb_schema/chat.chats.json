@@ -1,0 +1,27 @@
+[{
+  "_id": "chat123",
+  "participants": [
+    "user1",
+    "user2"
+  ],
+  "createdAt": "2025-03-18T10:00:00Z",
+  "lastMessageAt": "2025-03-18T10:05:00Z"
+},
+{
+  "_id": "chat456",
+  "participants": [
+    "user2",
+    "user3"
+  ],
+  "createdAt": "2025-03-18T10:10:00Z",
+  "lastMessageAt": "2025-03-18T10:15:00Z"
+},
+{
+  "_id": "chat789",
+  "participants": [
+    "user1",
+    "user4"
+  ],
+  "createdAt": "2025-03-18T10:20:00Z",
+  "lastMessageAt": "2025-03-18T10:25:00Z"
+}]
