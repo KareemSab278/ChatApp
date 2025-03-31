@@ -11,7 +11,7 @@ app.use(express.urlencoded({ extended: true }));
 
 //====================================================================================
 
-mongoose.connect(process.env.MONGO_URI, { // changed the url
+mongoose.connect('mongodb+srv://KareemSab278:Assbook%4027@cluster.oa33q.mongodb.net/chat', { // changed the url
         useNewUrlParser: true,
         useUnifiedTopology: true,
     })
