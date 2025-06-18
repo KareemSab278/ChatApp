@@ -3,7 +3,9 @@ export async function getChats(participantId) {
     if (!participantId) throw new Error("No participant ID provided");
     const chats = await fetch(`https://chatapp-4fjb.onrender.com/chats/${participantId}`);
     if (!chats.ok) throw new Error("Failed to fetch Chats");
-    return await chats.json();
+    const data = await chats.json();
+    // Filter on frontend as extra safety: only include chats where participantId is in participants
+    return data.filter(chat => Array.isArray(chat.participants) && chat.participants.includes(participantId));
   } catch (error) {
     console.error(error.message);
     return [];
