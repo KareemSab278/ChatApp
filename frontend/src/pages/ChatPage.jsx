@@ -31,15 +31,11 @@ const ChatPage = () => {
     };
 
     const fetchParticipants = async () => {
-      if (!user || !user._id) return;
-      const chats = await getChats(user._id);
+      const chats = await getChats();
       const selectedChat = chats.find(chat => chat._id === chatId);
-      if (!selectedChat || !selectedChat.participants.includes(user._id)) {
-        // User is not a participant, redirect or show error
-        navigate('/chats', { state: { signedInUser: user } });
-        return;
-      }
-      setParticipants(selectedChat.participants);
+        const participants = selectedChat.participants;
+        console.log(participants)
+        setParticipants(selectedChat.participants);
     };
     
     fetchParticipants();

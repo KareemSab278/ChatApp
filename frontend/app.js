@@ -1,8 +1,8 @@
-export async function getChats(participantId) {
+export async function getChats() {
   try {
-    if (!participantId) throw new Error("No participant ID provided");
-    const chats = await fetch(`https://chatapp-4fjb.onrender.com/chats/${participantId}`);
+    const chats = await fetch("https://chatapp-4fjb.onrender.com/chats");
     if (!chats.ok) throw new Error("Failed to fetch Chats");
+
     return await chats.json();
   } catch (error) {
     console.error(error.message);

@@ -25,8 +25,7 @@ const HomePage = () => {
   }, [user]);
 
   const fetchChats = async () => {
-    if (!user || !user._id) return;
-    let chats = await getChats(user._id);
+    let chats = await getChats();
     setChats(chats);
 };
 
