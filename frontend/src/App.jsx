@@ -3,7 +3,7 @@ import ChatPage from "./pages/ChatPage";
 import NavBar from "./components/NavBar";
 import SignUp from "./pages/SignUp";
 import "./styles/App.css";
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import { HashRouter as Router, Route, Routes } from "react-router-dom";
 import SignIn from "./pages/SignIn";
 
 function App() {

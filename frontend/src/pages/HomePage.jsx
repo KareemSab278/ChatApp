@@ -25,7 +25,8 @@ const HomePage = () => {
   }, [user]);
 
   const fetchChats = async () => {
-    let chats = await getChats();
+    if (!user || !user._id) return;
+    let chats = await getChats(user._id);
     setChats(chats);
 };
 
@@ -46,8 +47,8 @@ if (!user) {
   const handleUserSelect = async (selectedUser) => {
     const existingChat = chats.find(
       (chat) =>
-        chat.participants.length === 2 &&
         chat.participants.includes(user._id) &&
+        chat.participants.length === 2 &&
         chat.participants.includes(selectedUser._id)
     );
   
@@ -80,8 +81,9 @@ const signOut =  ()=>{
     (String(searchUser || "").trim() === "" ? true : (users.username && users.username.toLowerCase().includes(String(searchUser).toLowerCase())) )
   );
   
-  const filteredChats = chats.filter((chats) =>
-    (String(searchChat || "") === "" ? true : (chats._id && chats._id.toLowerCase().includes(String(searchChat).toLowerCase())) )
+  const filteredChats = chats.filter((chat) =>
+    chat.participants && chat.participants.includes(user._id) &&
+    (String(searchChat || "") === "" ? true : (chat._id && chat._id.toLowerCase().includes(String(searchChat).toLowerCase())) )
   );
 
     const getChatDisplayName = (chat) => {
