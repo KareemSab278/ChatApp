@@ -74,7 +74,7 @@ app.get('/chats', async (req, res) => {
 app.get('/chats/:participant', async (req, res) => {
     try {
         const { participant } = req.params;
-        const chats = await Chat.find({ participants: participant });
+        const chats = await Chat.find({ participants: { $in: [participant] } }); // might be this thats the security problem.
         if (!chats.length) {
             console.log('chat doesn’t exist');
             return res.status(404).json({ message: 'No chats found' });
