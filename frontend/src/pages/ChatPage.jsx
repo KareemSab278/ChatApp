@@ -1,9 +1,15 @@
 import { useState, useEffect, useRef } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import ChatBox from "../components/ChatBox";
-import { messagesByChatId, sendNewMessage, getChats } from "../../app"; // added sendNewMessage
-import '../styles/ChatPage.css'
+import { messagesByChatId, sendNewMessage, getChats } from "../../app";
 import { useLocation } from "react-router-dom";
+import Box from '@mui/material/Box';
+import Paper from '@mui/material/Paper';
+import Typography from '@mui/material/Typography';
+import IconButton from '@mui/material/IconButton';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import TextField from '@mui/material/TextField';
+import Button from '@mui/material/Button';
+import Stack from '@mui/material/Stack';
 
 const ChatPage = () => {
   const location = useLocation();
@@ -46,6 +52,7 @@ const ChatPage = () => {
     fetchChat();
   }, [chatId, navigate]);
 
+  
   useEffect(() => {
     if (chatBoxRef.current) {
       chatBoxRef.current.scrollTop = chatBoxRef.current.scrollHeight;
@@ -102,61 +109,92 @@ const ChatPage = () => {
   }
 
   return (
-    <div className="chat-container">
-      <div className="header">
-        <div className="header-content">
-          <div className="header-left">
-            <button
-              onClick={() => backButton()}
-              className="back-button"
-            >
-              ← Back
-            </button>
-            <h2 className="chat-title">{participants.slice(1)}</h2>
-          </div>
-          {/* <span className="dm-label">DM</span> */}
-        </div>
-      </div>
+    <Box sx={{ minHeight: '100vh', bgcolor: '#181a20', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'flex-start' }}>
+      <Box sx={{ width: '100%', maxWidth: 600, mx: 'auto', height: '90vh', display: 'flex', flexDirection: 'column', alignItems: 'stretch', position: 'relative', boxShadow: 3, borderRadius: 3, bgcolor: 'transparent' }}>
+        {/* Header - fixed at the top of the chat box */}
+        <Paper elevation={2} sx={{
+          width: '100%',
+          borderRadius: '12px 12px 0 0',
+          p: 2,
+          bgcolor: '#23263a',
+          display: 'flex',
+          alignItems: 'center',
+          position: 'sticky',
+          top: 0,
+          zIndex: 10
+        }}>
+          <IconButton onClick={backButton} size="large" sx={{ mr: 2, color: '#fff' }}>
+            <ArrowBackIcon />
+          </IconButton>
+          <Typography variant="h6" sx={{ fontWeight: 600, color: '#fff' }}>
+            {participants.slice(1).join(', ') || 'Chat'}
+          </Typography>
+        </Paper>
 
-      <ChatBox ref={chatBoxRef} className="chat-box"> {/* error here somewhere?????? */}
-        {messages.map((msg) => (
-          <div
-            key={msg._id}
-            // className={`message ${msg.sender === "You" ? "message-right" : "message-left"}`}
-            className={`message ${msg.senderId === user.username ? "message-right" : "message-left"}`}
-          >
-            <div
-              className={`message-bubble ${msg.senderId === user.username ? "message-you" : "message-other"}`}
-            >
-              <div className="sender">{msg.senderId}</div> {/* updated sender to senderId to show the sender inf rontend */}
-              <div>{msg.content}</div>
-              <div className="timestamp">
-                 {msg.timestamp.toLocaleString()}
-              </div>
-            </div>
-          </div>
-        ))}
-      </ChatBox>
+        {/* Chat messages - scrollable */}
+        <Box sx={{
+          flex: 1,
+          width: '100%',
+          p: 2,
+          overflowY: 'auto',
+          bgcolor: '#181a20',
+          display: 'flex',
+          flexDirection: 'column',
+          gap: 2,
+          borderLeft: '1px solid #23263a',
+          borderRight: '1px solid #23263a',
+          maxHeight: 'calc(90vh - 128px)', // header + input height
+          minHeight: '0',
+        }} ref={chatBoxRef}>
+          {messages.map((msg) => (
+            <Stack key={msg._id} direction="row" justifyContent={msg.senderId === user.username ? 'flex-end' : 'flex-start'}>
+              <Paper elevation={1} sx={{
+                bgcolor: msg.senderId === user.username ? '#3a3f5a' : '#23263a',
+                color: '#fff',
+                px: 2, py: 1, borderRadius: 2, maxWidth: '80%', minWidth: 60,
+                boxShadow: msg.senderId === user.username ? '0 2px 8px #6a82fb33' : '0 2px 8px #0002'
+              }}>
+                <Typography variant="caption" color="#bdbdbd" sx={{ fontWeight: 500 }}>
+                  {msg.senderId}
+                </Typography>
+                <Typography variant="body1" sx={{ wordBreak: 'break-word', color: '#fff' }}>{msg.content}</Typography>
+                <Typography variant="caption" color="#bdbdbd" sx={{ display: 'block', textAlign: 'right', mt: 0.5 }}>
+                  {msg.timestamp && new Date(msg.timestamp).toLocaleString()}
+                </Typography>
+              </Paper>
+            </Stack>
+          ))}
+        </Box>
 
-      <div className="input-container">
-        <form onSubmit={handleSendMessage} className="input-form">
-          <input
-            type="text"
-            placeholder="Type a message..."
-            value={message}
-            onChange={(e) => setMessage(e.target.value)}
-            onKeyPress={handleKeyPress}
-            className="message-input"
-          />
-          <button
-            type="submit"
-            className="send-button"
-          >
-            Send
-          </button>
-        </form>
-      </div>
-    </div>
+        {/* Input - fixed at the bottom of the chat box */}
+        <Paper elevation={3} sx={{
+          width: '100%',
+          borderRadius: '0 0 12px 12px',
+          p: 2,
+          bgcolor: '#23263a',
+          borderTop: '1px solid #23263a',
+          position: 'sticky',
+          bottom: 0,
+          zIndex: 10
+        }}>
+          <form onSubmit={handleSendMessage} style={{ display: 'flex', gap: 8 }}>
+            <TextField
+              fullWidth
+              variant="outlined"
+              placeholder="Type a message..."
+              value={message}
+              onChange={e => setMessage(e.target.value)}
+              onKeyPress={handleKeyPress}
+              size="small"
+              sx={{ bgcolor: '#181a20', input: { color: '#fff' }, '& .MuiOutlinedInput-root': { '& fieldset': { borderColor: '#444' }, '&:hover fieldset': { borderColor: '#6a82fb' }, '&.Mui-focused fieldset': { borderColor: '#6a82fb' } } }}
+            />
+            <Button type="submit" variant="contained" color="primary" sx={{ ml: 1, px: 3, borderRadius: 2, bgcolor: '#6a82fb', color: '#fff', '&:hover': { bgcolor: '#5a6fdc' } }}>
+              Send
+            </Button>
+          </form>
+        </Paper>
+      </Box>
+    </Box>
   );
 };
 
